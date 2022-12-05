@@ -2,6 +2,9 @@
 class GroupHelper:
     def __init__(self, app):
         self.app = app
+        self.group_delete = self.app.application.window(title="Delete group")
+        self.group_editor = self.app.application.window(title="Group editor")
+
 
     def get_group_list(self):
         group_list = []
@@ -24,7 +27,6 @@ class GroupHelper:
 
     def open_group_editor(self):
         self.app.main_window.window(auto_id="groupButton").click()
-        self.group_editor = self.app.application.window(title="Group editor")
         self.group_editor.wait("visible")
 
 
@@ -35,8 +37,9 @@ class GroupHelper:
     def delete_group(self, name):
         group_list = []
         self.open_group_editor()
-        #self.group_editor.window(title=f"{name}").click()
+        tree = self.group_editor.window(auto_id="uxAddressTreeView")
+        tree.get_item([0]).get_child(name).click()
         self.group_editor.window(auto_id="uxDeleteAddressButton").click()
-        self.group_editor.window(auto_id="uxDeleteAllRadioButton").click()
-        self.group_editor.window(auto_id="uxOKAddressButton").click()
+        self.group_delete.window(auto_id="uxDeleteAllRadioButton").click()
+        self.group_delete.window(auto_id="uxOKAddressButton").click()
         self.close_group_editor()
